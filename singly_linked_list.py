@@ -24,7 +24,7 @@ class linkedlist:
 			self.tail.nextnode = newnode
 			self.tail = newnode
 
-	def prepend(self, newvalue): #add a node at the beginning of the linked list
+	def push(self, newvalue): #add a node at the beginning of the linked list
 		newnode = node(newvalue)
 		if (self.head == None):
 			self.head = newnode
@@ -83,18 +83,24 @@ class linkedlist:
 
 	def remove_all_value(self, del_value): #remove all the node that has the del_value
 		current = self.head
-		while(current!=None):
+		while(current.nextnode!=None):
+			#print(current.value)
 			if(self.head.value == del_value):
 				current = current.nextnode
 				del_node = self.head
-				self.head = self.head.nextnode
+				self.head = current
+				del del_node
+			elif (current.nextnode.value == del_value):
+				del_node = current.nextnode
+				if(del_node != self.tail):
+					current.nextnode = del_node.nextnode
+				else:
+					current.nextnode = None
 				del del_node
 			else:
-				if (current.nextnode.value == del_value):
-					del_node = current.nextnode
-					current.nextnode = del_node.nextnode
-					del del_node
 				current = current.nextnode
+
+		self.tail = current
 
 	def length(self): #return the length if the linked list
 		current = self.head
@@ -104,10 +110,21 @@ class linkedlist:
 			current = current.nextnode
 		return length
 
+	def reverse(self): #reverse the linked list
+		prevn = None
+		current = self.head
+		while(current != None):
+			nextn = current.nextnode
+			current.nextnode = prevn
+			prevn = current
+			current = nextn
+		temp = self.head
+		self.head = self.tail
+		self.tail = temp
+
 ll = linkedlist()
-print(ll.length())
-ll.prepend(1)
-ll.prepend(0)
+ll.push(1)
+ll.push(0)
 ll.append(2)
 ll.append(3)
 ll.append(4)
@@ -116,9 +133,18 @@ ll.append(6)
 
 ll.insert(3,'a')
 ll.append('a')
-ll.prepend('a')
+ll.push('a')
 ll.insert(7,'a')
+ll.append('a')
+ll.push('a')
+ll.append('a')
+ll.printlist()
+
+ll.reverse()
 ll.printlist()
 
 ll.remove_all_value('a')
+ll.printlist()
+
+ll.reverse()
 ll.printlist()
